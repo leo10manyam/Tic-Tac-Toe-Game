@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colorful Tic Tac Toe</title>
+  <style>
+    /* Basic Reset */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Center content */
+    body { 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      height: 100vh; 
+      font-family: Arial, sans-serif; 
+      background: linear-gradient(135deg, #a8edea, #fed6e3); 
+      color: #333;
+    }
+
+    /* Game Title */
+    h1 {
+      text-align: center;
+      font-size: 2.5em;
+      color: #333;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Game Board */
+    .board { 
+      display: grid; 
+      grid-template-columns: repeat(3, 100px); 
+      grid-template-rows: repeat(3, 100px); 
+      gap: 10px; 
+    }
+
+    /* Each Cell Style */
+    .cell { 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      font-size: 2em; 
+      font-weight: bold; 
+      color: #fff; 
+      background-color: #4d79ff;
+      border-radius: 10px;
+      cursor: pointer; 
+      transition: transform 0.2s, background-color 0.3s;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .cell:hover { 
+      transform: scale(1.1); 
+      background-color: #405fdd;
+    }
+
+    /* Winning Message */
+    .message {
+      font-size: 1.5em;
+      margin-top: 20px;
+      color: #333;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Button for Restart */
+    .restart {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      color: #fff;
+      background-color: #ff6666;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s;
+    }
+    .restart:hover {
+      background-color: #e05555;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Tic Tac Toe</h1>
+    <div class="board" id="board">
+      <div class="cell" onclick="play(this, 0)"></div>
+      <div class="cell" onclick="play(this, 1)"></div>
+      <div class="cell" onclick="play(this, 2)"></div>
+      <div class="cell" onclick="play(this, 3)"></div>
+      <div class="cell" onclick="play(this, 4)"></div>
+      <div class="cell" onclick="play(this, 5)"></div>
+      <div class="cell" onclick="play(this, 6)"></div>
+      <div class="cell" onclick="play(this, 7)"></div>
+      <div class="cell" onclick="play(this, 8)"></div>
+    </div>
+    <p class="message" id="message"></p>
+    <button class="restart" onclick="resetGame()">Restart Game</button>
+  </div>
+
+  <script>
+    let board = Array(9).fill(null); // Initialize board with 9 nulls
+    let currentPlayer = 'X'; // Start with player 'X'
+    let gameActive = true; // Game is active by default
+
+    // Play Function: triggered when a cell is clicked
+    function play(cell, index) {
+      if (!cell.innerText && gameActive) {
+        cell.innerText = currentPlayer; // Display the current player in cell
+        board[index] = currentPlayer; // Update board array with player
+        cell.style.backgroundColor = currentPlayer === 'X' ? '#ff6666' : '#66b3ff'; // Color based on player
+        if (checkWinner()) {
+          document.getElementById('message').innerText = `${currentPlayer} wins! 🎉`;
+          gameActive = false; // Stop further clicks
+        } else if (board.every(cell => cell)) { // Check for a draw
+          document.getElementById('message').innerText = `It's a Draw! 🤝`;
+          gameActive = false;
+        } else {
+          currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; // Switch player
+          document.getElementById('message').innerText = `${currentPlayer}'s turn`;
+        }
+      }
+    }
+
+    // Check Winning Combinations
+    function checkWinner() {
+      const winConditions = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+        [0, 4, 8], [2, 4, 6]             // Diagonals
+      ];
+      return winConditions.some(combo => 
+        combo.every(index => board[index] === currentPlayer)
+      );
+    }
+
+    // Reset the Game
+    function resetGame() {
+      board = Array(9).fill(null); // Reset board array
+      currentPlayer = 'X'; // Set player 'X' to start
+      gameActive = true; // Reactivate the game
+      document.getElementById('message').innerText = `${currentPlayer}'s turn`;
+      document.querySelectorAll('.cell').forEach(cell => {
+        cell.innerText = ''; // Clear cell text
+        cell.style.backgroundColor = '#4d79ff'; // Reset cell color
+      });
+    }
+  </script>
+</body>
+</html>
