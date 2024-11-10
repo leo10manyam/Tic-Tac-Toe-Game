@@ -103,30 +103,28 @@
   </div>
 
   <script>
-    let board = Array(9).fill(null); // Initialize board with 9 nulls
-    let currentPlayer = 'X'; // Start with player 'X'
-    let gameActive = true; // Game is active by default
-
-    // Play Function: triggered when a cell is clicked
+    let board = Array(9).fill(null); 
+    let currentPlayer = 'X'; 
+    let gameActive = true; 
     function play(cell, index) {
       if (!cell.innerText && gameActive) {
-        cell.innerText = currentPlayer; // Display the current player in cell
-        board[index] = currentPlayer; // Update board array with player
-        cell.style.backgroundColor = currentPlayer === 'X' ? '#ff6666' : '#66b3ff'; // Color based on player
+        cell.innerText = currentPlayer; 
+        board[index] = currentPlayer; 
+        cell.style.backgroundColor = currentPlayer === 'X' ? '#ff6666' : '#66b3ff'; 
         if (checkWinner()) {
           document.getElementById('message').innerText = `${currentPlayer} wins! 🎉`;
-          gameActive = false; // Stop further clicks
-        } else if (board.every(cell => cell)) { // Check for a draw
+          gameActive = false; 
+        } else if (board.every(cell => cell)) { 
           document.getElementById('message').innerText = `It's a Draw! 🤝`;
           gameActive = false;
         } else {
-          currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; // Switch player
+          currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; 
           document.getElementById('message').innerText = `${currentPlayer}'s turn`;
         }
       }
     }
 
-    // Check Winning Combinations
+    
     function checkWinner() {
       const winConditions = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
@@ -140,13 +138,13 @@
 
     // Reset the Game
     function resetGame() {
-      board = Array(9).fill(null); // Reset board array
-      currentPlayer = 'X'; // Set player 'X' to start
-      gameActive = true; // Reactivate the game
+      board = Array(9).fill(null); 
+      currentPlayer = 'X'; 
+      gameActive = true; 
       document.getElementById('message').innerText = `${currentPlayer}'s turn`;
       document.querySelectorAll('.cell').forEach(cell => {
-        cell.innerText = ''; // Clear cell text
-        cell.style.backgroundColor = '#4d79ff'; // Reset cell color
+        cell.innerText = ''; 
+        cell.style.backgroundColor = '#4d79ff'; 
       });
     }
   </script>
